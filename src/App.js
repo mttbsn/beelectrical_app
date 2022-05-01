@@ -1,10 +1,13 @@
 import React from 'react';
+import {ThemeProvider, CSSReset} from '@chakra-ui/core';
 
 function App() {
   return (
     <>
-    <p> hola mundo < />
-    </>
+    <ThemeProvider>
+      <CSSReset>
+      <p> hola mundo < /p>
+    </ThemeProvider>
   );
 }
 
