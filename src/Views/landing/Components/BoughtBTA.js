@@ -1,10 +1,11 @@
 import React from 'react';
+import {Heading} from '@chakra-ui/core';
 
 const BoughtBTA = () => {
   return (
   <>
-    <p> hola mundo </p>
+    <Heading > decentrlaice the sum <Heading>
   </>
   );
 };
-export default BoughtBTA
+export default BoughtBTA;
