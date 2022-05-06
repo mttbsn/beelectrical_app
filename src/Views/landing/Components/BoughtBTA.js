@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import api from '../api';
 import {Heading,
   InputGroup,
   Box,
@@ -13,20 +14,41 @@ import {Heading,
   NumberDecrementStepper,
   NumberInputStepper,
   Icon,
+  useToast;
   } from '@chakra-ui/core';
 
 const BoughtBTA = () => {
+  const toast = userToast();
   const [toBuy, setToBuy] =useState(100)
   const [addres, setAddres] =useState()
   
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     
     // validar que la direccion mida 56 caracteres.
     if(address.lenght !== 56){
-    alert('Incorrect')
+      toast({
+          title: 'Account invalid.',
+          description: "Control your address.",
+          status: 'warning',
+          duration: 9000,
+          isClosable: true,
+        });
       return;
     }
+    
+    try {
+      await api.loadAccount(address
+    }catch (err){
+      toast({
+          title: 'Account invalid.',
+          description: "This address is not active.",
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+        });
+      return;
+      }   
   };
   
   return (
@@ -36,16 +58,19 @@ const BoughtBTA = () => {
     <Box onSubmit= "{handleSubmit} as= "form" mx= "auto" maxwidth= {500} px= {10} > 
       <InputGruop mt={10}> 
         <NumberInput width = "100%" defaultValue= {100} > <NumberInputField />
+          <NumberInputField 
+             onChange={( { target: {value}} ) => setToBuy (value)}  />
             <NumberInputStepper>
               <NumberIncrementStepper />
               <NumberDecrementStepper />
-           </NumberInputStepper 
+           </NumberInputStepper >
          </NumberInput>
          <InputRightAddon> BEEL </InputRightAddon>
       </InputGruop>
       <InputGruop mt={3}>  
       <InputLeftElement children={<Icon nome="unlock" color='gray.300' />} />
-      <Input onChange={( { target: {value}} ) =>setAddress(value)}  placeholder='your wallet address of stellar.'/>
+      <Input 
+         onChange={( { target: {value}} ) =>setAddress(value)}  placeholder='your wallet address of stellar.'/>
       </InputGruop>
       <Button mt= {10} type= "submit" width= 100% variantColor = "teal"> BUY </Button>
      </Box>
